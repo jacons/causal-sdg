@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "causal-sdg"
+name = "causalsdg"
 version = "0.1.0"
 description = "Tabular synthetic data generator based on Structural Causal Models"
 readme = "readme.md"
