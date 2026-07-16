@@ -1,0 +1,19 @@
+# Project-specific
+/aequitas_2025.zip
+example/synthetic_example*
+
+# IDE / tooling
+/.idea/
+/.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/

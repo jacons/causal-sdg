@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "causal-sdg"
+version = "0.1.0"
+description = "Tabular synthetic data generator based on Structural Causal Models"
+readme = "readme.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Andrea Iommi", email = "andrea.iommi@phd.unipi.it" }]
+keywords = ["synthetic-data", "causal-inference", "scm", "dowhy", "tabular-data"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "networkx",
+    "scikit-learn",
+    "lightgbm",
+    "dowhy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+notebook = ["jupyter", "ipykernel", "nbconvert"]
+
+[project.urls]
+Homepage = "https://github.com/jacons/causal-sdg"
+Repository = "https://github.com/jacons/causal-sdg"
+Issues = "https://github.com/jacons/causal-sdg/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
