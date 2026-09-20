@@ -1,5 +1,7 @@
 # Tabular Data Generator with Structural Causal Models
 
+![Dataset cover](imgs/dataset-cover.png)
+
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python Version](https://img.shields.io/badge/Python-%3E=3.11-blue.svg)](https://www.python.org/downloads/)
 
 ## Description
@@ -44,6 +46,11 @@ relationships between variables, and generating datasets of arbitrary sizes.
 | 19 | Science and engineering associate professionals                                   | ['computer programming', 'computer graphics', 'electricity', 'project management', 'office software']                                                                                  |
 | 20 | Cleaners and helpers                                                              | ['clean equipment', 'office software', 'provide domestic care', 'operate recycling processing equipment', 'sales strategies']                                                          |
 | 21 | Chief executives, senior officials and legislators                                | ['business and administration', 'computer programming', 'project management', 'office software', 'data mining']                                                                        |
+
+## Example dataset
+
+An example of dataset generated with this framework is available on Kaggle:
+[Synthetic Job Offer and Curricula](https://www.kaggle.com/datasets/jaconsx/synthetic-job-offer-and-curricula).
 
 ## Installation
 
