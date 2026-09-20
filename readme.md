@@ -59,6 +59,85 @@ An example of dataset generated with this framework is available on Kaggle:
     conda activate CausalSDG
 ```
 
+## Quick start
+
+Define a DAG, attach a probability table to each node, then sample:
+
+```python
+import networkx as nx
+import pandas as pd
+from causal_sdg import (CausalGenerator, CPTData, PTData,
+                        ConditionalMechanismFromDict, StochasticMechanismFromDict)
+
+# 1. The causal graph
+graph = nx.DiGraph([("education", "occupation"), ("occupation", "seniority")])
+
+# 2. A marginal table for the root node...
+education = PTData(
+    cpt={(): [0.5, 0.3, 0.2]},
+    y_categories=["high_school", "bachelor", "master"],
+)
+
+# ...and a conditional table P(Y | parents) for every child node
+occupation = CPTData(
+    cpt={
+        ("high_school",): [0.7, 0.2, 0.1],
+        ("bachelor",):    [0.2, 0.5, 0.3],
+        ("master",):      [0.1, 0.3, 0.6],
+    },
+    y_categories=["clerk", "analyst", "engineer"],
+)
+
+seniority = CPTData(
+    cpt={
+        ("clerk",):    [0.6, 0.3, 0.1],
+        ("analyst",):  [0.4, 0.4, 0.2],
+        ("engineer",): [0.3, 0.4, 0.3],
+    },
+    y_categories=["junior", "mid", "senior"],
+)
+
+# 3. Attach the mechanisms to the model
+generator = CausalGenerator(direct_graph=graph)
+generator.custom_fit(
+    dataset=pd.DataFrame(columns=list(graph.nodes)),  # tables are given, nothing to learn
+    causal_mechanisms={
+        "education":  StochasticMechanismFromDict(education, num_func=1),
+        "occupation": ConditionalMechanismFromDict(occupation, num_func=1),
+        "seniority":  ConditionalMechanismFromDict(seniority, num_func=1),
+    },
+)
+
+# 4. Sample
+df = generator.sample(elements=1000)
+print(df.head())
+#      education occupation seniority
+# 0     bachelor   engineer       mid
+# 1       master   engineer    senior
+# 2     bachelor      clerk    junior
+# 3  high_school    analyst    senior
+# 4     bachelor    analyst       mid
+```
+
+### Interventions
+
+Simulate `do(education = "master")` and observe the downstream effect:
+
+```python
+df_do = generator.sample(elements=1000, interventions={"education": lambda x: "master"})
+
+print(df["occupation"].value_counts(normalize=True))     # observational
+# clerk 0.42 | analyst 0.30 | engineer 0.29
+print(df_do["occupation"].value_counts(normalize=True))  # interventional
+# engineer 0.59 | analyst 0.32 | clerk 0.09
+```
+
+If you already have real data and want the mechanisms estimated from it, use
+`generator.auto_fit(dataset)` instead of `custom_fit`. Transformations can be attached with the
+`pre_processing` / `post_processing` arguments of `CausalGenerator`, and
+`generator.sample_and_save(folder, name, elements=...)` writes the dataset plus its graph to disk.
+
+
 ## Authors
 
 * [Andrea Iommi] ([Jacons](https://github.com/jacons))
